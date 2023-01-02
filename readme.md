@@ -10,7 +10,7 @@ On your local development machine, install the following tools:
 
 1. Clone the GitHub repository
 
-        git clone https://
+        git clone https://github.com/duyhub/livestream-downloader
 
 2. Create a new python3 virtual environment:
 
@@ -28,7 +28,7 @@ On your local development machine, install the following tools:
 
         python3 stream_dl.py --url <livestream link>
     
-    Example: python3 stream_dl.py --url https://www.youtube.com/watch?v=abcxyz 
+Example: python3 stream_dl.py --url https://www.youtube.com/watch?v=abcxyz 
 
 To stop recording, press Ctrl+C or Command+C to terminate
 
@@ -37,7 +37,8 @@ The script will generate many small clips from the recording session. Next step 
 ## Merge into one video
 
 ### Requirement
-    Your local machine needs to install ffmpeg to run this script.
+
+Your local machine needs to install `ffmpeg` to run this script.
 
 ### Merge small clips
 
