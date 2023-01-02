@@ -50,13 +50,6 @@ def dl_stream(args):
             print(f"Sleep for {time_sleep} s.")
             time.sleep(time_sleep)
         else:
-            # # Create the time stamp for multiple segments of m3u8 object
-            # time_stamp_list = []
-            # for i in range(num_of_segments):
-            #     time_stamp = stream_segments[0].program_date_time + timedelta(seconds=5*i)
-            #     time_stamp_list.append(time_stamp.strftime("%Y%m%d-%H%M%S"))
-            # print(time_stamp_list)
-
             # Write files
             for i in range(num_of_segments):
                 time_stamp = stream_segments[i].current_program_date_time.strftime("%Y%m%d-%H%M%S")
