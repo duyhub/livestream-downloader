@@ -1,0 +1,5 @@
+m3u8==3.4.0
+streamlink==5.1.2
+seaborn
+matplotlib
+numpy

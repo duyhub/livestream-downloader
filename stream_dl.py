@@ -1,3 +1,6 @@
+"""
+This script will record a livestream video such as youtube or twitch which is usually unable to download by normal tools
+"""
 import urllib
 import m3u8
 import streamlink
@@ -24,8 +27,8 @@ def dl_stream(args):
     Download chunks and turn them to multiple small clips
     """
     # Set arguments
-    filename = args.name
-    directory = args.output
+    filename = 'live'
+    directory = args.output_dir
     if directory != '':
         directory += '/'
     chunks = args.chunks    
@@ -39,7 +42,7 @@ def dl_stream(args):
         # Initialize variables
         stream_segments = get_stream(args.url)
         num_of_segments = len(stream_segments)
-        cur_time_stamp = stream_segments[0].program_date_time.strftime("%Y%m%d-%H%M%S")
+        cur_time_stamp = stream_segments[0].current_program_date_time.strftime("%Y%m%d-%H%M%S")
 
         # This is to reduce the frequency of recording the same chunk
         if pre_time_stamp == cur_time_stamp:
@@ -47,16 +50,18 @@ def dl_stream(args):
             print(f"Sleep for {time_sleep} s.")
             time.sleep(time_sleep)
         else:
-            # Create the time stamp for multiple segments of m3u8 object
-            time_stamp_list = []
-            for i in range(num_of_segments):
-                time_stamp = stream_segments[0].program_date_time + timedelta(seconds=5*i)
-                time_stamp_list.append(time_stamp.strftime("%Y%m%d-%H%M%S"))
-            print(time_stamp_list)
+            # # Create the time stamp for multiple segments of m3u8 object
+            # time_stamp_list = []
+            # for i in range(num_of_segments):
+            #     time_stamp = stream_segments[0].program_date_time + timedelta(seconds=5*i)
+            #     time_stamp_list.append(time_stamp.strftime("%Y%m%d-%H%M%S"))
+            # print(time_stamp_list)
 
             # Write files
             for i in range(num_of_segments):
-                file = open(directory + filename + '_' + str(time_stamp_list[i]) + '.ts', 'wb+')
+                time_stamp = stream_segments[i].current_program_date_time.strftime("%Y%m%d-%H%M%S")
+                print(f'Downloading {time_stamp}')
+                file = open(directory + filename + '_' + str(time_stamp) + '.ts', 'wb+')
                 with urllib.request.urlopen(stream_segments[i].uri) as response:
                     html = response.read()
                     file.write(html)
@@ -68,22 +73,22 @@ def dl_stream(args):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-url",
+        "--url",
         type=str,
         default='',
     )
     parser.add_argument(
-        "-output",
+        "--output_dir",
         type=str,
         default='',
     )
+    # parser.add_argument(
+    #     "-name",
+    #     type=str,
+    #     default='live'
+    # )
     parser.add_argument(
-        "-name",
-        type=str,
-        default='live'
-    )
-    parser.add_argument(
-        "-chunks",
+        "--chunks",
         type=int,
         default=-1
     )
